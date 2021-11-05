@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../js/jquery-3.6.0.min.js">
+    <link rel="stylesheet" href="../js/bootstrap.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <style>
+    .center{
+        margin: auto;
+        width: 100%;
+        padding: 7px;
+        text-align: center;
+    }
+    .gris{
+        background-color: grey;
+        margin: auto;
+        width: 100%;
+        padding: 7px;
+        text-align: center;
+    }
+    .images{
+        background-color: hotpink;
+    }
+    .hola{
+        background-color: grey;
+    }
+    </style>
+</head>
+<body>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/listaVerbos-1.js"></script>
+    <script>
+        var nivelActual = 0
+        var stringNivel = "Nivel: " + nivelActual.toString()
+        function establecerVerbosIniciales()
+        {
+            var verboForma1 = verbos[nivelActual][0],
+            verboForma2 = verbos[nivelActual][1],
+            verboForma3 = verbos[nivelActual][2],
+            verboFormaEspañol = verbos[nivelActual][3]
+            console.log(verboForma1);
+            console.log(verboForma2);
+            console.log(verboForma3);
+            console.log(verboFormaEspañol);
+            
+            document.getElementById("LineaNivel").innerHTML = stringNivel;
+        }
+        function cambiarTextoNivel() {
+            document.getElementById("LineaNivel").innerHTML = stringNivel;
+        }
+        window.onload = function() {
+            cambiarTextoNivel();
+        };
+    </script>
+    <div class="container">
+        <div class="row">  
+            <div id="LineaNivel" class="center" style="background-color: blue"; onclick="establecerVerbosIniciales()", oncreate="cambiarTextoNivel()"> </div>
+        </div>           
+        <div id="lineaEstrellas" class="gris">
+            <i id=estrella1 class="bi bi-star"></i> 
+            <i id=estrella2 class="bi bi-star"></i>     
+            <i id=estrella3 class="bi bi-star"></i>
+            <i id=estrella4 class="bi bi-star"></i>
+            <i id=estrella5 class="bi bi-star"></i>     
+            <i id=estrella6 class="bi bi-star"></i>
+            <i id=estrella7 class="bi bi-star"></i>   
+            <i id=estrella8 class="bi bi-star"></i>                  
+            <script>
+                var aciertos = 1;
+                var multi3 = 1;
+                function actualizaEstrellas(){
+                    var estrellaActual = Math.ceil(aciertos/3);
+                    console.log(estrellaActual+" es la estrella actual");
+                    if(multi3 == 1 ){
+                        console.log(estrellaActual.toString()+" esta a vacia");
+                        multi3++;
+                    }else if(multi3 == 2){
+                        console.log(estrellaActual);
+                        var estrellaActualImagen = document.getElementById(estrellaActual);
+                        $('#estrellaActualImagen').removeClass('bi bi-star').addClass("bi bi-star-half");
+                        document.getElementById(estrellaActual.toString()).contentWindow.location.reload(true);
+                        multi3++;
+                        console.log(estrellaActual.toString()+" esta a mitad");
+                    }else if(multi3 == 3){
+                        $('#estrellaActualImagen').removeClass("bi bi-star-half").addClass('bi bi-star-fill');
+                        multi3 = 2;
+                        console.log(estrellaActual.toString()+" esta a llena");
+                        
+                    }
+                    console.log(aciertos+" aciertos llevamos");
+                    aciertos++;
+                }               
+            </script>
+        </div>
+        <input type="button" value="alerta normal" onclick="actualizaEstrellas()"/>
+    </div>
+</body>
+</html>
