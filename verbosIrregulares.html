@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="js/jquery-3.6.0.min.js">
     <link rel="stylesheet" href="js/bootstrap.min.js">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/css/flag-icon.min.css" rel="stylesheet"/>
     <style>
     .gris{
         background-color: grey;
@@ -25,22 +27,72 @@
         margin: 0.5%;
         background-color: #FE0;
         width: 100px;
-        border: blue 3px solid;
-        
+        border: blue 2px solid;
+        height: 24px;
     }  
     #container {
         display:         flex;
         flex-wrap:       wrap;
         justify-content: center;
     }
+    .recuadros{
+        color: grey;
+        text-align: center;
+        background-color: whitesmoke;
+        box-sizing: border-box;
+        border: black;
+        border-width: 1px;
+        border-style: solid;
+    }
+    .centro{
+        text-align: center;
+    }
+    .botones{
+        color: white;
+        text-align: center;
+        background-color: blue;
+        width: 50px;
+        height: 40px;
+        border-radius: 12px;
+        box-sizing: border-box;
+        border: white;
+        border-width: 1px;
+        border-style: solid;
+    }    
     </style>
 </head>
 <body>
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/listaVerbos-1.js"></script>
-    
-    
-    <div class="gris">
+    <div id="VentanaInicialId">
+        <hr color="blue" style="height:10px;border-radius: 8px;">
+        <div class="recuadros">
+            <span class="flag-icon flag-icon-gb"></span> Test Verbos Irregulares <span class="flag-icon flag-icon-gb"></span>
+        </div>
+        <br>
+        <div class="centro">
+            <input style="width: 130px;" class="botones" type="button" value="Cambia de Nivel">
+        </div>
+        <br>
+        <div class="recuadros">
+            <p style="color: grey; margin: 5px;">Elige el numero de verbos</p>
+        </div>
+        <br>
+        <div class="centro">
+            <input onclick="cantidadDeVerbos(this)" id="20" class="botones" type="button" value="20">
+            <input onclick="cantidadDeVerbos(this)" id="30" class="botones" type="button" value="30">
+            <input onclick="cantidadDeVerbos(this)" id="40" class="botones" type="button" value="40">
+            <input onclick="cantidadDeVerbos(this)" id="50" class="botones" type="button" value="50">
+            <input onclick="cantidadDeVerbos(this)" id="60" class="botones" type="button" value="60">
+            <br>
+            <br>
+            <input onclick="cantidadDeVerbos(this)" id="70" class="botones" type="button" value="70">
+            <input onclick="cantidadDeVerbos(this)" id="80" class="botones" type="button" value="80">
+            <input onclick="cantidadDeVerbos(this)" id="90" class="botones" type="button" value="90">
+            <input onclick="cantidadDeVerbos(this)" id="140" class="botones" type="button" value="140">
+        </div>
+    </div>    
+    <div id="VentanaJuego" class="gris">
         <!-- Fondo azul con el numero de Nivel que estamos -->
         <div id="LineaNivel" class="azul" onclick="establecerVerbosIniciales()", oncreate="cambiarTextoNivel()"></div>      
         <!-- Linea de las estrellas -->
@@ -58,30 +110,58 @@
         <!-- Las tres cajas amarillas de las palabras ocultas -->
         <div id="container">                 
             <div id="caja0" class="cajaAmarilla">
-                <p id="mensaje0">&nbsp;</p>
+                <input style="width: 90px;height: 17px;" type="text" id="mensaje0">&nbsp;</input>
             </div>
             <div id="caja1" class="cajaAmarilla">
-                <p id="mensaje1">&nbsp;</p>
+                <input style="width: 90px;height: 17px;" type="text" id="mensaje1">&nbsp;</input>
             </div>
             <div id="caja2" class="cajaAmarilla">
-                <p id="mensaje2">&nbsp;</p>
+                <input style="width: 90px;height: 17px;" type="text" id="mensaje2">&nbsp;</input>
             </div> 
         </div>
         <!-- Los tres botones, para empezar o pasar entre niveles -->   
             <p id="botonesJugar">
-                <input type="button" id="botonInicial" value="EMPEZAR" onclick="cambiarTextoBotonInicial();"/>
                 <input type="button" value="NIVEL ANTERIOR" onclick="cambiarTextoBotonAnteriorNivel();"/>
-                <input type="button" value="SIGUIENTE NIVEL" onclick="cambiarTextoBotonSiguienteNivel();"/>  
+                <input type="button" value="COMPROBAR" onclick="checkeaVerbo();"/>  
             </p>
             <input type="button" value="Clica" onclick= "acertar()"/>
             <input type="button" value="Click para ocultar" onclick= "HideContent(listaElementosJuego)"/>
         </div>
-        
+        <!-- Conjunto de funciones para el estado inicial del juego, incuido los verbos iniciales, el texto del nivel,
+            y que verbos se pueden resolver. Tambien incluye la funcionde cuando acertamos-->
         <script>
-            var listaElementosJuego = ['container', 'botonesJugar', 'lineaEstrellas', 'LineaNivel'];
-            var verbosPosibles = 0
+            //
+            //
+            //VARIABLES
+            //
+            //
+            var miNivel = 0;
+            var listaElementosJuego = ['VentanaJuego'];
+            var objetosIniciales = ['VentanaInicialId'];
+            var verbosPosibles = 100
             var nivelActual = 0
             var stringNivel = "Nivel: " + nivelActual.toString()
+            var numRandom = Math.floor(Math.random() * verbosPosibles);
+            var aciertos = 1;
+            var multi3 = 2;
+            var estrellaVacia = "bi-star";
+            var estrellaMedia = "bi-star-half";
+            var estrellaLlena = "bi-star-fill";
+            var nivel = 0;
+            var valor1 = 0;
+            var valor2 = 0;
+            var valorMisetrioso = 0;
+            var espacioVacio = "";
+            var palabraCorrecta = "";
+            var elBotonCorrecto;
+            //
+            //
+            //
+            //
+            //
+            function seteaNivel(){
+                //TODO tienes que coger la ID del boton que se ha pulsado, y hacer un set text de la parte azul
+            }
             function establecerVerbosIniciales()
             {
                 var verboForma1 = verbos[nivelActual][0],
@@ -91,8 +171,7 @@
                 console.log(verboForma1);
                 console.log(verboForma2);
                 console.log(verboForma3);
-                console.log(verboFormaEspañol);
-                
+                console.log(verboFormaEspañol);                
                 document.getElementById("LineaNivel").innerHTML = stringNivel;
             }
             function cambiarTextoNivel() {
@@ -106,143 +185,175 @@
                 actualizaEstrellas();
             }
             function verboAResolver() {
-                var numRandom = Math.floor(Math.random() * verbosPosibles);
+                numRandom = Math.floor(Math.random() * verbosPosibles);
+            }
+            function cantidadDeVerbos(btn){
+                var numeroVerbos = btn.value;
+                verbosPosibles = parseInt(numeroVerbos);
+                HideContent(objetosIniciales);
+                ShowContent(listaElementosJuego);
+                cambiarTextoBotonInicial();
+                
+            }
+            function checkeaVerbo() {
+                console.log(palabraCorrecta);
+                console.log(elBotonCorrecto.value);
+                if(palabraCorrecta == elBotonCorrecto.value)
+                {
+                    actualizaEstrellas();
+                    cambiarTextoBotonSiguienteNivel();
+                }
             }
             window.onload = function() {
-                cambiarTextoNivel(); 
+                cambiarTextoNivel();
+                HideContent(listaElementosJuego); 
             };
-        </script> 
-        <script> //Script que sirve para medir los aciertos, y dependiendo de cuantos llevemos vamos cambiando el relleno de las estrellas
-                var aciertos = 1;
-                var multi3 = 2;
-                var estrellaVacia = "bi-star";
-                var estrellaMedia = "bi-star-half";
-                var estrellaLlena = "bi-star-fill";
-                function actualizaEstrellas(){
-                    var estrellaActual = Math.ceil(aciertos/2);
-                    console.log(estrellaActual+" es la estrella actual");
-                    if(multi3 == 1 ){
-                        console.log(estrellaActual.toString()+" esta a vacia");
-                        multi3++;
-                    }else if(multi3 == 2){
-                        console.log(estrellaActual);
-                        var estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
-                        $(estrellaActualImagen).removeClass(estrellaVacia);
-                        $(estrellaActualImagen).addClass(estrellaMedia);
-                        multi3++;
-                        console.log(estrellaActual.toString()+" esta a mitad");
-                    }else if(multi3 == 3){
-                        estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
-                        $(estrellaActualImagen).removeClass(estrellaMedia);
-                        $(estrellaActualImagen).addClass(estrellaLlena);
-                        multi3 = 2;
-                        console.log(estrellaActual.toString()+" esta a llena");
-                        
-                    }
-                    console.log(aciertos+" aciertos llevamos");
-                    aciertos++;
-                } 
-        </script>
-        <script> //Funcion para esconder objetos y revelar objetos
-                function HideContent(obj) {
-                  for (var i = 0; i < obj.length; i++) {
-                    document.getElementById([obj[i]]).style.display = 'none';
-                  }
+        //Script que sirve para medir los aciertos, y dependiendo de cuantos llevemos vamos cambiando el relleno de las estrellas                
+            function actualizaEstrellas(){
+                var estrellaActual = Math.ceil(aciertos/2);
+                console.log(estrellaActual+" es la estrella actual");
+                if(multi3 == 1 ){
+                    console.log(estrellaActual.toString()+" esta a vacia");
+                    multi3++;
+                }else if(multi3 == 2){
+                    console.log(estrellaActual);
+                    var estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
+                    $(estrellaActualImagen).removeClass(estrellaVacia);
+                    $(estrellaActualImagen).addClass(estrellaMedia);
+                    multi3++;
+                    console.log(estrellaActual.toString()+" esta a mitad");
+                }else if(multi3 == 3){
+                    estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
+                    $(estrellaActualImagen).removeClass(estrellaMedia);
+                    $(estrellaActualImagen).addClass(estrellaLlena);
+                    multi3 = 2;
+                    console.log(estrellaActual.toString()+" esta a llena");
+                    
                 }
-                function ShowContent(obj) {
-                  for (var i = 0; i < obj.length; i++) {
-                    document.getElementById([obj[i]]).style.display = display;
-                  }
+                console.log(aciertos+" aciertos llevamos");
+                aciertos++;
+            } 
+        //Funcion para esconder objetos y revelar objetos
+            function HideContent(obj) {
+                for (var i = 0; i < obj.length; i++) {
+                document.getElementById([obj[i]]).style.display = 'none';
                 }
-                
-        </script>
-        <script> //Script añadido por Colo 10/11, aqui se gestiona el cambiar las zoans de texto por las formas del verbo, poniendo dos random
-                var nivel = 0;
-                var valor1 = 0;
-                var valor2 = 0;
-                var valorMisetrioso = 0;
-                var espacioVacio = "&nbsp;";
-                function cambiarTextoBotonInicial()
-                {   
+            }
+            function ShowContent(obj) {
+                for (var i = 0; i < obj.length; i++) {
+                document.getElementById([obj[i]]).style.display = 'block';
+                }
+            }
+            
+        //Script añadido por Colo 10/11, aqui se gestiona el cambiar las zonas de texto por las formas del verbo, poniendo dos random
+            
+            function cambiarTextoBotonInicial()
+            {   
+                verboAResolver();
+                console.log(numRandom);
+                var mensajeAOcultar1 = Math.floor(Math.random() * 3);
+                var mensajeAOcultar2 = Math.floor(Math.random() * 3);
+                do 
+                {
+                    mensajeAOcultar2 = Math.floor(Math.random() * 3);
+                }
+                while(mensajeAOcultar1 === mensajeAOcultar2);
+                valor1 = mensajeAOcultar1;
+                valor2 = mensajeAOcultar2;
+                valorMisterioso = 3 - (valor1 + valor2);
+                console.log(mensajeAOcultar1.toString());
+                console.log(mensajeAOcultar1.toString());
+                var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
+                var elBotonElegido1 = document.getElementById(mensaje1);
+                elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
+                elBotonElegido1.disabled = true;
+                var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
+                var elBotonElegido2 = document.getElementById(mensaje2);
+                elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
+                elBotonElegido2.disabled = true;
+                palabraCorrecta = verbos[numRandom][valorMisterioso];
+                $("#botonInicial").hide();
+                var mensaje3 = "mensaje" + valorMisetrioso.toString();
+                elBotonCorrecto = document.getElementById(mensaje3);  
+            }
+            function cambiarTextoBotonSiguienteNivel()
+            {   
+                verboAResolver();
+                console.log(numRandom);
+                var elMensaje0 = document.getElementById("mensaje0");
+                var elMensaje1 = document.getElementById("mensaje1");
+                var elMensaje2 = document.getElementById("mensaje2");
+                elMensaje0.value = espacioVacio;
+                elMensaje1.value = espacioVacio;
+                elMensaje2.value = espacioVacio;
+                elMensaje0.disabled = false;
+                elMensaje1.disabled = false;
+                elMensaje2.disabled = false;
+                nivel++;
+                var mensajeAOcultar1 = Math.floor(Math.random() * 3);
+                var mensajeAOcultar2 = Math.floor(Math.random() * 3);
+                do 
+                {
+                    mensajeAOcultar2 = Math.floor(Math.random() * 3);
+                }
+                while(mensajeAOcultar1 === mensajeAOcultar2);
+                valor1 = mensajeAOcultar1;
+                valor2 = mensajeAOcultar2;
+                valorMisterioso = 3 - (valor1 + valor2);
+                console.log(mensajeAOcultar1.toString());
+                console.log(mensajeAOcultar1.toString());
+                var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
+                var elBotonElegido1 = document.getElementById(mensaje1);
+                elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
+                elBotonElegido1.disabled = true;
+                var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
+                var elBotonElegido2 = document.getElementById(mensaje2);
+                elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
+                console.log(verbos[numRandom][mensajeAOcultar1]);
+                elBotonElegido2.disabled = true;
+                palabraCorrecta = verbos[numRandom][valorMisterioso];
+                var mensaje3 = "mensaje" + valorMisetrioso.toString();
+                elBotonCorrecto = document.getElementById(mensaje3);
+            }
+            function cambiarTextoBotonAnteriorNivel()
+            {   
+                if(nivel >= 0){
+                    verboAResolver();
+                    console.log(numRandom);
+                    var elMensaje0 = document.getElementById('mensaje0');
+                    var elMensaje1 = document.getElementById('mensaje1');
+                    var elMensaje2 = document.getElementById('mensaje2');
+                    elMensaje0.value = espacioVacio;
+                    elMensaje1.value = espacioVacio;
+                    elMensaje2.value = espacioVacio;
+                    elMensaje0.disabled = false;
+                    elMensaje1.disabled = false;
+                    elMensaje2.disabled = false;
+                    nivel--;
                     var mensajeAOcultar1 = Math.floor(Math.random() * 3);
                     var mensajeAOcultar2 = Math.floor(Math.random() * 3);
+                    valor1 = mensajeAOcultar1;
+                    valor2 = mensajeAOcultar2;
+                    valorMisterioso = 3 - (valor1 + valor2);
                     do 
                     {
                         mensajeAOcultar2 = Math.floor(Math.random() * 3);
                     }
                     while(mensajeAOcultar1 === mensajeAOcultar2);
-                    valor1 = mensajeAOcultar1;
-                    valor2 = mensajeAOcultar2;
-                    valorMisterioso = 3 - (valor1 + valor2);
                     console.log(mensajeAOcultar1.toString());
                     console.log(mensajeAOcultar1.toString());
                     var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
                     var elBotonElegido1 = document.getElementById(mensaje1);
-                    elBotonElegido1.innerHTML = verbos[numRandom][mensajeAOcultar1];
+                    elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
+                    elBotonElegido1.disabled = true;
                     var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
                     var elBotonElegido2 = document.getElementById(mensaje2);
-                    elBotonElegido2.innerHTML = verbos[numRandom][mensajeAOcultar2];
-                    $("#botonInicial").hide();  
+                    elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
+                    elBotonElegido2.disabled = true;
+                    palabraCorrecta = verbos[numRandom][valorMisterioso];
                 }
-                function cambiarTextoBotonSiguienteNivel()
-                {   
-                    var elMensaje0 = document.getElementById("mensaje0");
-                    var elMensaje1 = document.getElementById("mensaje1");
-                    var elMensaje2 = document.getElementById("mensaje2");
-                    elMensaje0.innerHTML = espacioVacio;
-                    elMensaje1.innerHTML = espacioVacio;
-                    elMensaje2.innerHTML = espacioVacio;
-                    nivel++;
-                    var mensajeAOcultar1 = Math.floor(Math.random() * 3);
-                    var mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                    do 
-                    {
-                        mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                    }
-                    while(mensajeAOcultar1 === mensajeAOcultar2);
-                    valor1 = mensajeAOcultar1;
-                    valor2 = mensajeAOcultar2;
-                    valorMisterioso = 3 - (valor1 + valor2);
-                    console.log(mensajeAOcultar1.toString());
-                    console.log(mensajeAOcultar1.toString());
-                    var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
-                    var elBotonElegido1 = document.getElementById(mensaje1);
-                    elBotonElegido1.innerHTML = verbos[numRandom][mensajeAOcultar1];
-                    var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
-                    var elBotonElegido2 = document.getElementById(mensaje2);
-                    elBotonElegido2.innerHTML = verbos[numRandom][mensajeAOcultar2];
-                }
-                function cambiarTextoBotonAnteriorNivel()
-                {   
-                    if(nivel >= 0){
-                        var elMensaje0 = document.getElementById('mensaje0');
-                        var elMensaje1 = document.getElementById('mensaje1');
-                        var elMensaje2 = document.getElementById('mensaje2');
-                        elMensaje0.innerHTML = espacioVacio;
-                        elMensaje1.innerHTML = espacioVacio;
-                        elMensaje2.innerHTML = espacioVacio;
-                        nivel--;
-                        var mensajeAOcultar1 = Math.floor(Math.random() * 3);
-                        var mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                        valor1 = mensajeAOcultar1;
-                        valor2 = mensajeAOcultar2;
-                        valorMisterioso = 3 - (valor1 + valor2);
-                        do 
-                        {
-                            mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                        }
-                        while(mensajeAOcultar1 === mensajeAOcultar2);
-                        console.log(mensajeAOcultar1.toString());
-                        console.log(mensajeAOcultar1.toString());
-                        var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
-                        var elBotonElegido1 = document.getElementById(mensaje1);
-                        elBotonElegido1.innerHTML = verbos[numRandom][mensajeAOcultar1];
-                        var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
-                        var elBotonElegido2 = document.getElementById(mensaje2);
-                        elBotonElegido2.innerHTML = verbos[numRandom][mensajeAOcultar2];
-                    }
-                }
+            }
         </script>
     </div>
-    </body>
+</body>
 </html>
