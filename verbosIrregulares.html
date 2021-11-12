@@ -11,31 +11,21 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/css/flag-icon.min.css" rel="stylesheet"/>
     <style>
-    .gris{
-        background-color: grey;
-        margin: auto;
-        width: 900px;
-        padding: 7px;
-        text-align: center;
-    }
-    .azul{
-        background-color: blue;
-        width: 900px;
-        padding: 10px;
-    }
     .cajaAmarilla{
         margin: 0.5%;
         background-color: #FE0;
-        width: 100px;
         border: blue 2px solid;
+        border-radius: 7px;
         height: 24px;
     }  
     #container {
+        align-items: center;
         display:         flex;
         flex-wrap:       wrap;
         justify-content: center;
     }
     .recuadros{
+        margin: auto;
         color: grey;
         text-align: center;
         background-color: whitesmoke;
@@ -62,20 +52,25 @@
     </style>
 </head>
 <body>
+    <!-- TODO quitar los botones de testeo, y quizá añadir uno de salir. -->
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/listaVerbos-1.js"></script>
     <div id="VentanaInicialId">
-        <hr color="blue" style="height:10px;border-radius: 8px;">
+        <hr color="blue" style="height:10px;border-radius: 8px;width: 100%;">
         <div class="recuadros">
             <span class="flag-icon flag-icon-gb"></span> Test Verbos Irregulares <span class="flag-icon flag-icon-gb"></span>
         </div>
         <br>
         <div class="centro">
-            <input style="width: 130px;" class="botones" type="button" value="Cambia de Nivel">
+            <div>Niveles Completados</div>
+            <br>
+            <i id="copa20" class="bi-trophy"></i> <i id="copa30" class="bi-trophy"> </i><i id="copa40" class="bi-trophy"></i>
+            <i id="copa50" class="bi-trophy"></i> <i id="copa60" class="bi-trophy"> </i><i id="copa70" class="bi-trophy"></i>
+            <i id="copa80" class="bi-trophy"></i> <i id="copa90" class="bi-trophy"> </i><i id="copa140" class="bi-trophy"></i>
         </div>
         <br>
         <div class="recuadros">
-            <p style="color: grey; margin: 5px;">Elige el numero de verbos</p>
+            <p style="color: grey; margin: 5px;"><i class="bi bi-book"> </i>Elige el numero de verbos <i class="bi bi-book"></i> </p> 
         </div>
         <br>
         <div class="centro">
@@ -91,10 +86,13 @@
             <input onclick="cantidadDeVerbos(this)" id="90" class="botones" type="button" value="90">
             <input onclick="cantidadDeVerbos(this)" id="140" class="botones" type="button" value="140">
         </div>
+        <hr color="blue" style="height:10px;border-radius: 8px;width: 100%;">    
     </div>    
-    <div id="VentanaJuego" class="gris">
+    <div id="VentanaJuego" class="centro">
+        <hr color="blue" style="height:10px;border-radius: 8px;width: 100%;">    
         <!-- Fondo azul con el numero de Nivel que estamos -->
-        <div id="LineaNivel" class="azul" onclick="establecerVerbosIniciales()", oncreate="cambiarTextoNivel()"></div>      
+        <div id="LineaNivel" class="recuadros" onclick="establecerVerbosIniciales()", oncreate="cambiarTextoNivel()"></div>
+        <br>
         <!-- Linea de las estrellas -->
         <div id="lineaEstrellas">
             <!-- Estrellas definidas cada una con su id -->
@@ -106,26 +104,36 @@
             <i id=estrella6 class="bi-star"></i>
             <i id=estrella7 class="bi-star"></i>   
             <i id=estrella8 class="bi-star"></i>    
-        </div> 
+        </div>
+        <br> 
         <!-- Las tres cajas amarillas de las palabras ocultas -->
         <div id="container">                 
             <div id="caja0" class="cajaAmarilla">
-                <input style="width: 90px;height: 17px;" type="text" id="mensaje0">&nbsp;</input>
+                <input style="width: 94px;height: 17px;" type="text" id="mensaje0">&nbsp;</input>
             </div>
             <div id="caja1" class="cajaAmarilla">
-                <input style="width: 90px;height: 17px;" type="text" id="mensaje1">&nbsp;</input>
+                <input style="width: 94px;height: 17px;" type="text" id="mensaje1">&nbsp;</input>
             </div>
             <div id="caja2" class="cajaAmarilla">
-                <input style="width: 90px;height: 17px;" type="text" id="mensaje2">&nbsp;</input>
+                <input style="width: 94px;height: 17px;" type="text" id="mensaje2">&nbsp;</input>
             </div> 
         </div>
+        <br>
+        <div>
+            <div id="verboEspañol"></div>
+        </div>
+        <br>
         <!-- Los tres botones, para empezar o pasar entre niveles -->   
             <p id="botonesJugar">
-                <input type="button" value="NIVEL ANTERIOR" onclick="cambiarTextoBotonAnteriorNivel();"/>
-                <input type="button" value="COMPROBAR" onclick="checkeaVerbo();"/>  
+                <!--<input type="button" value="NIVEL ANTERIOR" onclick="cambiarTextoBotonAnteriorNivel();"/>-->
+                <input id="botonComprobarId" type="button" value="COMPROBAR" onclick="checkeaVerbo();"/>  
             </p>
+            <br>
             <input type="button" value="Clica" onclick= "acertar()"/>
             <input type="button" value="Click para ocultar" onclick= "HideContent(listaElementosJuego)"/>
+            <br>
+            <hr color="blue" style="height:10px;border-radius: 8px;width: 100%;">    
+            <input type="button" value="prueba" onclick="perder()"/>
         </div>
         <!-- Conjunto de funciones para el estado inicial del juego, incuido los verbos iniciales, el texto del nivel,
             y que verbos se pueden resolver. Tambien incluye la funcionde cuando acertamos-->
@@ -135,33 +143,80 @@
             //VARIABLES
             //
             //
-            var miNivel = 0;
+            //Variables de nuestras ventanas
             var listaElementosJuego = ['VentanaJuego'];
             var objetosIniciales = ['VentanaInicialId'];
-            var verbosPosibles = 100
+            //Otras variables
+            var listaEstrellas = ["estrella1","estrella2","estrella3","estrella4","estrella5","estrella6","estrella7","estrella8"]
+            var verbosPosibles = 0
             var nivelActual = 0
             var stringNivel = "Nivel: " + nivelActual.toString()
             var numRandom = Math.floor(Math.random() * verbosPosibles);
             var aciertos = 1;
             var multi3 = 2;
+            var botonComprobar = document.getElementById("botonComprobarId");
+            //Variables de iconos
             var estrellaVacia = "bi-star";
             var estrellaMedia = "bi-star-half";
             var estrellaLlena = "bi-star-fill";
+            var copaVacia = "bi-trophy";
+            var copaLlena = "bi-trophy-fill";
             var nivel = 0;
             var valor1 = 0;
             var valor2 = 0;
-            var valorMisetrioso = 0;
+            var valorMisterioso = 0;
             var espacioVacio = "";
             var palabraCorrecta = "";
             var elBotonCorrecto;
+            var fallos = 0;
+            var palabraEnEsp;
+            var Conseguida20 = false;
+            var Conseguida30 = false;
+            var Conseguida40 = false;
+            var Conseguida50 = false;
+            var Conseguida60 = false;
+            var Conseguida70 = false;
+            var Conseguida80 = false;
+            var Conseguida90 = false;
+            var Conseguida140 = false;
             //
             //
             //
             //
             //
-            function seteaNivel(){
-                //TODO tienes que coger la ID del boton que se ha pulsado, y hacer un set text de la parte azul
+            //Miramos si tenemos 16 aciertos y si los tenemos hemos ganado
+            function checkeaGanar(){
+                if(aciertos == 16){
+                    ganar();
+                }
             }
+            //Si aciertas 16 veces, volvemos a la pantalla principal y reseteamos los aciertos. Tambien te damos una copita
+            function ganar(){
+                HideContent(listaElementosJuego);
+                ShowContent(objetosIniciales);
+                resetValores();
+                rellenaCopas();
+            }
+            function resetValores()
+            {
+                aciertos = 1;
+                fallos = 0;
+                multi3 = 2;
+                reseteaEstrellas(listaEstrellas);
+            }
+            //Rellena las copas si cumples las condiciones
+            function rellenaCopas(){
+                copaActual = document.getElementById("copa"+verbosPosibles);
+                $(copaActual).removeClass(copaVacia);
+                $(copaActual).addClass(copaLlena);
+                booleanoActual = document.getElementById("Conseguida"+verbosPosibles);
+                booleanoActual = true;
+            }
+            //Ponemos en la parte de arriba los niveles que hemos seleccionado
+            function seteaNivel(){
+                document.getElementById("LineaNivel").innerHTML = "Nivel " + verbosPosibles;
+            }
+            //Verbos que aparecen al principio del programa, uno de ellos estará oculto
             function establecerVerbosIniciales()
             {
                 var verboForma1 = verbos[nivelActual][0],
@@ -172,66 +227,221 @@
                 console.log(verboForma2);
                 console.log(verboForma3);
                 console.log(verboFormaEspañol);                
-                document.getElementById("LineaNivel").innerHTML = stringNivel;
             }
-            function cambiarTextoNivel() {
-                document.getElementById("LineaNivel").innerHTML = stringNivel;
-            }
-            function acertar()
-            {
-                nivelActual++;
-                stringNivel = "Nivel: " + nivelActual.toString()
-                document.getElementById("LineaNivel").innerHTML = stringNivel;
-                actualizaEstrellas();
-            }
+            //Verbo que está oculto  
             function verboAResolver() {
                 numRandom = Math.floor(Math.random() * verbosPosibles);
             }
+            //Según el nivel elegido, esta será la cantidad de verbos, y por lo tanto su dificultad
             function cantidadDeVerbos(btn){
                 var numeroVerbos = btn.value;
                 verbosPosibles = parseInt(numeroVerbos);
                 HideContent(objetosIniciales);
                 ShowContent(listaElementosJuego);
-                cambiarTextoBotonInicial();
-                
+                cambiarTextoBotonInicial();               
             }
+            //
             function checkeaVerbo() {
-                console.log(palabraCorrecta);
-                console.log(elBotonCorrecto.value);
+                console.log("La palabra correcta es " + palabraCorrecta);
+                console.log("Has escrito " + elBotonCorrecto.value);
                 if(palabraCorrecta == elBotonCorrecto.value)
                 {
-                    actualizaEstrellas();
-                    cambiarTextoBotonSiguienteNivel();
+                        actualizaEstrellas();
+                        acertar();
+                        cambiarTextoBotonSiguienteNivel();         
+                }
+                else
+                {
+                    fallar();
+                    checkeaPerder();
                 }
             }
+            function reseteaEstrellas(obj){               
+                for(var i=0; i < obj.length; i++){    
+                    var laEstrella = document.getElementById([obj[i]]);             
+                    $(laEstrella).removeClass(estrellaMedia);
+                    $(laEstrella).removeClass(estrellaLlena);
+                    $(laEstrella).addClass(estrellaVacia);
+                }
+            }
+            function checkeaPerder(){
+                if(fallos == 3){
+                    perder();
+                }
+            }
+            function perder()
+            {
+                HideContent(listaElementosJuego);
+                ShowContent(objetosIniciales);
+                resetValores();
+            }
+            function acertar()
+            {
+                botonComprobar.style.background='#008000';
+                aciertos++;
+                checkeaGanar();
+            }
+            function fallar()
+            {
+                botonComprobar.style.background='#ff0000';
+                fallos++;
+            }
+            function checkeaCookies(){
+                var cookie20 = getCookie("20");
+                var cookie30 = getCookie("30");
+                var cookie40 = getCookie("40");
+                var cookie50 = getCookie("50");
+                var cookie60 = getCookie("60");
+                var cookie70 = getCookie("70");
+                var cookie80 = getCookie("80");
+                var cookie90 = getCookie("90");
+                var cookie140 = getCookie("140");
+                if(cookie20 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa20");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida20");
+                    booleanoActual = true;
+                }
+                if(cookie30 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa30");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida30");
+                    booleanoActual = true;
+                }
+                if(cookie40 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa40");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida40");
+                    booleanoActual = true;
+                }
+                if(cookie50 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa50");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida50");
+                    booleanoActual = true;
+                }
+                if(cookie60 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa60");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida60");
+                    booleanoActual = true;
+                }
+                if(cookie70 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa70");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida70");
+                    booleanoActual = true;
+                }
+                if(cookie80 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa80");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida80");
+                    booleanoActual = true;
+                }
+                if(cookie90 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa90");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida90");
+                    booleanoActual = true;
+                }
+                if(cookie140 == "conseguida")
+                {
+                    copaActual = document.getElementById("copa140");
+                    $(copaActual).removeClass(copaVacia);
+                    $(copaActual).addClass(copaLlena);
+                    booleanoActual = document.getElementById("Conseguida140");
+                    booleanoActual = true;
+                }
+            }
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i <ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
             window.onload = function() {
-                cambiarTextoNivel();
                 HideContent(listaElementosJuego); 
+                checkeaCookies();
             };
+            //Funcion que se ejecuta al cerrar o cargar pagina
+            window.onbeforeunload = function(){
+                if(Conseguida20)
+                {
+                    document.cookie = "20 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida30)
+                {
+                    document.cookie = "30 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida40)
+                {
+                    document.cookie = "40 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida50)
+                {
+                    document.cookie = "50 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida60)
+                {
+                    document.cookie = "60 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida70)
+                {
+                    document.cookie = "70 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida80)
+                {
+                    document.cookie = "80 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida90)
+                {
+                    document.cookie = "90 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+                if(Conseguida140)
+                {
+                    document.cookie = "140 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
+                }
+            }
         //Script que sirve para medir los aciertos, y dependiendo de cuantos llevemos vamos cambiando el relleno de las estrellas                
             function actualizaEstrellas(){
                 var estrellaActual = Math.ceil(aciertos/2);
-                console.log(estrellaActual+" es la estrella actual");
-                if(multi3 == 1 ){
-                    console.log(estrellaActual.toString()+" esta a vacia");
-                    multi3++;
-                }else if(multi3 == 2){
-                    console.log(estrellaActual);
+                if(multi3 == 2){
                     var estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
                     $(estrellaActualImagen).removeClass(estrellaVacia);
                     $(estrellaActualImagen).addClass(estrellaMedia);
                     multi3++;
-                    console.log(estrellaActual.toString()+" esta a mitad");
                 }else if(multi3 == 3){
                     estrellaActualImagen = document.getElementById("estrella"+estrellaActual);
                     $(estrellaActualImagen).removeClass(estrellaMedia);
                     $(estrellaActualImagen).addClass(estrellaLlena);
                     multi3 = 2;
-                    console.log(estrellaActual.toString()+" esta a llena");
-                    
                 }
                 console.log(aciertos+" aciertos llevamos");
-                aciertos++;
             } 
         //Funcion para esconder objetos y revelar objetos
             function HideContent(obj) {
@@ -243,13 +453,22 @@
                 for (var i = 0; i < obj.length; i++) {
                 document.getElementById([obj[i]]).style.display = 'block';
                 }
-            }
-            
-        //Script añadido por Colo 10/11, aqui se gestiona el cambiar las zonas de texto por las formas del verbo, poniendo dos random
-            
+            }            
+        //Script añadido por Colo 10/11, aqui se gestiona el cambiar las zonas de texto por las formas del verbo, poniendo dos random   
             function cambiarTextoBotonInicial()
             {   
+                var elMensaje0 = document.getElementById("mensaje0");
+                var elMensaje1 = document.getElementById("mensaje1");
+                var elMensaje2 = document.getElementById("mensaje2");
+                elMensaje0.value = espacioVacio;
+                elMensaje1.value = espacioVacio;
+                elMensaje2.value = espacioVacio;
+                elMensaje0.disabled = false;
+                elMensaje1.disabled = false;
+                elMensaje2.disabled = false;
+                botonComprobar.style.background="#a0a0a0";
                 verboAResolver();
+                seteaNivel();
                 console.log(numRandom);
                 var mensajeAOcultar1 = Math.floor(Math.random() * 3);
                 var mensajeAOcultar2 = Math.floor(Math.random() * 3);
@@ -261,8 +480,7 @@
                 valor1 = mensajeAOcultar1;
                 valor2 = mensajeAOcultar2;
                 valorMisterioso = 3 - (valor1 + valor2);
-                console.log(mensajeAOcultar1.toString());
-                console.log(mensajeAOcultar1.toString());
+                console.log("El valor a resolver es " + valorMisterioso);
                 var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
                 var elBotonElegido1 = document.getElementById(mensaje1);
                 elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
@@ -272,9 +490,12 @@
                 elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
                 elBotonElegido2.disabled = true;
                 palabraCorrecta = verbos[numRandom][valorMisterioso];
+                console.log("La palabra correcta es " + palabraCorrecta);
                 $("#botonInicial").hide();
-                var mensaje3 = "mensaje" + valorMisetrioso.toString();
-                elBotonCorrecto = document.getElementById(mensaje3);  
+                var mensaje3 = "mensaje" + valorMisterioso.toString();
+                elBotonCorrecto = document.getElementById(mensaje3);
+                var mensajeEsp = document.getElementById("verboEspañol");
+                mensajeEsp.innerHTML = verbos[numRandom][3];  
             }
             function cambiarTextoBotonSiguienteNivel()
             {   
@@ -289,7 +510,7 @@
                 elMensaje0.disabled = false;
                 elMensaje1.disabled = false;
                 elMensaje2.disabled = false;
-                nivel++;
+                //nivel++;
                 var mensajeAOcultar1 = Math.floor(Math.random() * 3);
                 var mensajeAOcultar2 = Math.floor(Math.random() * 3);
                 do 
@@ -297,11 +518,10 @@
                     mensajeAOcultar2 = Math.floor(Math.random() * 3);
                 }
                 while(mensajeAOcultar1 === mensajeAOcultar2);
-                valor1 = mensajeAOcultar1;
-                valor2 = mensajeAOcultar2;
-                valorMisterioso = 3 - (valor1 + valor2);
-                console.log(mensajeAOcultar1.toString());
-                console.log(mensajeAOcultar1.toString());
+                console.log("El primer valor resuelto es " + mensajeAOcultar1);
+                console.log("El segundo valor resuelto es " + mensajeAOcultar2);
+                valorMisterioso = 3 - (mensajeAOcultar1 + mensajeAOcultar2);
+                console.log("El valor a resolver es " + valorMisterioso);
                 var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
                 var elBotonElegido1 = document.getElementById(mensaje1);
                 elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
@@ -309,49 +529,12 @@
                 var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
                 var elBotonElegido2 = document.getElementById(mensaje2);
                 elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
-                console.log(verbos[numRandom][mensajeAOcultar1]);
                 elBotonElegido2.disabled = true;
                 palabraCorrecta = verbos[numRandom][valorMisterioso];
-                var mensaje3 = "mensaje" + valorMisetrioso.toString();
+                var mensaje3 = "mensaje" + valorMisterioso.toString();
                 elBotonCorrecto = document.getElementById(mensaje3);
-            }
-            function cambiarTextoBotonAnteriorNivel()
-            {   
-                if(nivel >= 0){
-                    verboAResolver();
-                    console.log(numRandom);
-                    var elMensaje0 = document.getElementById('mensaje0');
-                    var elMensaje1 = document.getElementById('mensaje1');
-                    var elMensaje2 = document.getElementById('mensaje2');
-                    elMensaje0.value = espacioVacio;
-                    elMensaje1.value = espacioVacio;
-                    elMensaje2.value = espacioVacio;
-                    elMensaje0.disabled = false;
-                    elMensaje1.disabled = false;
-                    elMensaje2.disabled = false;
-                    nivel--;
-                    var mensajeAOcultar1 = Math.floor(Math.random() * 3);
-                    var mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                    valor1 = mensajeAOcultar1;
-                    valor2 = mensajeAOcultar2;
-                    valorMisterioso = 3 - (valor1 + valor2);
-                    do 
-                    {
-                        mensajeAOcultar2 = Math.floor(Math.random() * 3);
-                    }
-                    while(mensajeAOcultar1 === mensajeAOcultar2);
-                    console.log(mensajeAOcultar1.toString());
-                    console.log(mensajeAOcultar1.toString());
-                    var mensaje1 = "mensaje" + mensajeAOcultar1.toString();
-                    var elBotonElegido1 = document.getElementById(mensaje1);
-                    elBotonElegido1.value = verbos[numRandom][mensajeAOcultar1];
-                    elBotonElegido1.disabled = true;
-                    var mensaje2 = "mensaje" + mensajeAOcultar2.toString();
-                    var elBotonElegido2 = document.getElementById(mensaje2);
-                    elBotonElegido2.value = verbos[numRandom][mensajeAOcultar2];
-                    elBotonElegido2.disabled = true;
-                    palabraCorrecta = verbos[numRandom][valorMisterioso];
-                }
+                var mensajeEsp = document.getElementById("verboEspañol");
+                mensajeEsp.innerHTML = verbos[numRandom][3];
             }
         </script>
     </div>
