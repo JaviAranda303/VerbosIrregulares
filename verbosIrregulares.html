@@ -55,6 +55,10 @@
     <!-- TODO quitar los botones de testeo, y quizá añadir uno de salir. -->
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/listaVerbos-1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+
     <div id="VentanaInicialId">
         <hr color="blue" style="height:10px;border-radius: 8px;width: 100%;">
         <div class="recuadros">
@@ -211,6 +215,14 @@
                 $(copaActual).addClass(copaLlena);
                 booleanoActual = document.getElementById("Conseguida"+verbosPosibles);
                 booleanoActual = true;
+                setCookie(verbosPosibles, 1, 100);
+            }
+            function rellenaCopasCookies(laGalleta){
+                copaActual = document.getElementById("copa"+laGalleta);
+                $(copaActual).removeClass(copaVacia);
+                $(copaActual).addClass(copaLlena);
+                booleanoActual = document.getElementById("Conseguida"+verbosPosibles);
+                booleanoActual = true;
             }
             //Ponemos en la parte de arriba los niveles que hemos seleccionado
             function seteaNivel(){
@@ -286,146 +298,55 @@
                 botonComprobar.style.background='#ff0000';
                 fallos++;
             }
-            function checkeaCookies(){
-                var cookie20 = getCookie("20");
-                var cookie30 = getCookie("30");
-                var cookie40 = getCookie("40");
-                var cookie50 = getCookie("50");
-                var cookie60 = getCookie("60");
-                var cookie70 = getCookie("70");
-                var cookie80 = getCookie("80");
-                var cookie90 = getCookie("90");
-                var cookie140 = getCookie("140");
-                if(cookie20 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa20");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida20");
-                    booleanoActual = true;
+            
+
+            function pillaGalletas(){
+               
+                if(getCookie("20")){
+                    Conseguida20 = true;
+                    rellenaCopasCookies("20");
                 }
-                if(cookie30 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa30");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida30");
-                    booleanoActual = true;
+                if(getCookie("30")){
+                    Conseguida30 = true;
+                    rellenaCopasCookies("30");
                 }
-                if(cookie40 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa40");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida40");
-                    booleanoActual = true;
+                if(getCookie("40")){
+                    Conseguida40 = true;
+                    rellenaCopasCookies("40");
                 }
-                if(cookie50 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa50");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida50");
-                    booleanoActual = true;
+                if(getCookie("50")){
+                    Conseguida50 = true;
+                    rellenaCopasCookies("50");
                 }
-                if(cookie60 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa60");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida60");
-                    booleanoActual = true;
+                if(getCookie("60")){
+                    Conseguida60 = true;
+                    rellenaCopasCookies("60");
                 }
-                if(cookie70 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa70");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida70");
-                    booleanoActual = true;
+                if(getCookie("70")){
+                    Conseguida70 = true;
+                    rellenaCopasCookies("70");
                 }
-                if(cookie80 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa80");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida80");
-                    booleanoActual = true;
+                if(getCookie("80")){
+                    Conseguida80 = true;
+                    rellenaCopasCookies("80");
                 }
-                if(cookie90 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa90");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida90");
-                    booleanoActual = true;
+                if(getCookie("90")){
+                    Conseguida90 = true;
+                    rellenaCopasCookies("90");
                 }
-                if(cookie140 == "conseguida")
-                {
-                    copaActual = document.getElementById("copa140");
-                    $(copaActual).removeClass(copaVacia);
-                    $(copaActual).addClass(copaLlena);
-                    booleanoActual = document.getElementById("Conseguida140");
-                    booleanoActual = true;
+                if(getCookie("140")){
+                    Conseguida140 = true;
+                    rellenaCopasCookies("140");
                 }
             }
-            function getCookie(cname) {
-                let name = cname + "=";
-                let decodedCookie = decodeURIComponent(document.cookie);
-                let ca = decodedCookie.split(';');
-                for(let i = 0; i <ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                    }
-                    if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                    }
-                }
-                return "";
-            }
+
             window.onload = function() {
                 HideContent(listaElementosJuego); 
-                checkeaCookies();
+                pillaGalletas();
             };
             //Funcion que se ejecuta al cerrar o cargar pagina
             window.onbeforeunload = function(){
-                if(Conseguida20)
-                {
-                    document.cookie = "20 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida30)
-                {
-                    document.cookie = "30 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida40)
-                {
-                    document.cookie = "40 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida50)
-                {
-                    document.cookie = "50 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida60)
-                {
-                    document.cookie = "60 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida70)
-                {
-                    document.cookie = "70 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida80)
-                {
-                    document.cookie = "80 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida90)
-                {
-                    document.cookie = "90 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
-                if(Conseguida140)
-                {
-                    document.cookie = "140 = conseguida; expires=Thu, 13 Nov 2021 12:00:00 UTC";
-                }
+                
             }
         //Script que sirve para medir los aciertos, y dependiendo de cuantos llevemos vamos cambiando el relleno de las estrellas                
             function actualizaEstrellas(){
@@ -536,6 +457,72 @@
                 var mensajeEsp = document.getElementById("verboEspañol");
                 mensajeEsp.innerHTML = verbos[numRandom][3];
             }
+            function setCookie(cname, cvalue, exdays) {
+                    const d = new Date();
+                    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                    const expires = 'expires=' + d;
+                    document.cookie = cname + '=' + cvalue + ';' + expires + d;
+                    console.log("Añadida cookie " + cname + "Con valor " + cvalue);
+                }
+                function getCookie(name) {
+                    var dc = document.cookie;
+                    var prefix = name + "=";
+                    var begin = dc.indexOf("; " + prefix);
+                    if (begin == -1) {
+                        begin = dc.indexOf(prefix);
+                        if (begin != 0) return null;
+                    }
+                    else
+                    {
+                        begin += 2;
+                        var end = document.cookie.indexOf(";", begin);
+                        if (end == -1) {
+                        end = dc.length;
+                        }
+                    }
+                    // because unescape has been deprecated, replaced with decodeURI
+                    //return unescape(dc.substring(begin + prefix.length, end));
+                    return decodeURI(dc.substring(begin + prefix.length, end));
+                } 
+            function checkCookie(cname) {
+                const cookie = window.CookieObj.getCookie(cname);
+                if (cookie !== '') {
+                    return true;
+                }
+                return false;
+            }
+            const cookies = (function () {
+                return {
+                    setCookie: (cname, cvalue, exdays) => {
+                        const d = new Date();
+                        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                        const expires = 'expires=' + d.toUTCString();
+                        document.cookie = cname + '=' + cvalue + '; ' + expires;
+                    },
+                    getCookie: (cname) => {
+                        const name = cname + '=';
+                        const ca = document.cookie.split(';');
+                        for (let i = 0; i < ca.length; i += 1) {
+                            let c = ca[i];
+                            while (c.charAt(0) === ' ') c = c.substring(1);
+                            if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+                        }
+                        return '';
+                    },
+                    checkCookie: (cname) => {
+                        const cookie = window.CookieObj.getCookie(cname);
+                        if (cookie !== '') {
+                            return true;
+                        }
+                        return false;
+                    },
+                };
+            }());
+            window.CookieObj = cookies;
+            
+            
+            
+            
         </script>
     </div>
 </body>
